@@ -19,4 +19,15 @@ awk '{ printf("%s",\$0); n++; if(n%4==0) { printf("\\n");} else { printf("\\t\\t
 # 一行bash 过滤双端fastq(Read1+Read2 < 100)并输出到R1.fq&R2.fq文件
 awk '{ printf("%s",\$0); n++; if(n%4==0) { printf("\\n");} else { printf("\\t\\t");} }' | sed 's/\\t\\t/\\n/g' | awk 'NR%4==1{a=\$0;{getline b; getline c; getline d; if(length(b) > $Lenthrd){print a"\\n"b"\\n"c"\\n"d}}}' | awk -F "\\t" '{print \$1 > "R1.fq"; print \$2 > "R2.fq"}'
 # getline
+``` 
+- 20190222 [Valid Phone Number](https://leetcode.com/problems/valid-phone-numbers/)
+```bash
+grep -P '^(\d{3}-|\(\d{3}\) )\d{3}-\d{4}$' file.txt
+sed -n -r '/^([0-9]{3}-|\([0-9]{3}\) )[0-9]{3}-[0-9]{4}$/p' file.txt
+awk '/^([0-9]{3}-|\([0-9]{3}\) )[0-9]{3}-[0-9]{4}$/' file.txt
+# regular express
+# [0-9]{repNUM} == d{repNUM}
+# (A|B) == A or B
+# grep -P PATTERN is a Perl regular expression
+# sed -r --regexp-extended use extended regular expressions in the script.
 ```
