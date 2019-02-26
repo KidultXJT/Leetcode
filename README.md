@@ -31,3 +31,9 @@ awk '/^([0-9]{3}-|\([0-9]{3}\) )[0-9]{3}-[0-9]{4}$/' file.txt
 # grep -P PATTERN is a Perl regular expression
 # sed -r --regexp-extended use extended regular expressions in the script.
 ```
+
+- 20190226 [transpose-file](https://leetcode.com/problems/transpose-file/)
+```bash
+awk '{for(i = 1; i <= NF; i++){if(NR == 1){a[i]=$i}else{a[i]=(a[i]" "$i)}}}END{for(i in a){print a[i]}}' file.txt
+awk '{for(i=1; i<=NF; i++) a[i,NR]=$i} END {for(i=1; a[i,1]!=""; i++) {for(j=1; j<NR; j++) printf a[i,j] " "; print a[i,NR]}}' file.txt
+```
