@@ -37,3 +37,14 @@ awk '/^([0-9]{3}-|\([0-9]{3}\) )[0-9]{3}-[0-9]{4}$/' file.txt
 awk '{for(i = 1; i <= NF; i++){if(NR == 1){a[i]=$i}else{a[i]=(a[i]" "$i)}}}END{for(i in a){print a[i]}}' file.txt
 awk '{for(i=1; i<=NF; i++) a[i,NR]=$i} END {for(i=1; a[i,1]!=""; i++) {for(j=1; j<NR; j++) printf a[i,j] " "; print a[i,NR]}}' file.txt
 ```
+
+最近在和某牙医合作写小论文，耽搁了不少事情啊～（都是借口）
+那篇3月底的论文约稿能顺利完成啦～（好好干就能行）
+已经**犯规**了（都是借口，做个小题目根本花不了多少时间），宽松一点，``平均``每天至少1个Leetcode的题目解答或者其他实用小技巧（杨同学说得对，不要给自己那么多框框条条啦～）
+
+- 20190227 [Tenth Line](https://leetcode.com/problems/tenth-line/)
+```bash
+head -n 10 file.txt  | tail -n +10
+tail -n +10 file.txt | head -n 1
+# 这道题很损 看着很简单，其实有个小点损 If the file contains less than 10 lines
+```
