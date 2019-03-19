@@ -48,3 +48,10 @@ head -n 10 file.txt  | tail -n +10
 tail -n +10 file.txt | head -n 1
 # 这道题很损 看着很简单，其实有个小点损 If the file contains less than 10 lines
 ```
+
+- 20190319 filter fasta by Length
+```bash
+cat test.fna | awk '{ printf("%s",$0); n++; if(n%2==0) { printf("\n");} else { printf("\t\t");} }' | sed 's/\t\t/\n/g' | awk 'NR%2==1{a=$0;{getline b; if(length(b) > 100){print a"\n"b}}}' > test_len100.fna
+# getline to save next line
+```
+
