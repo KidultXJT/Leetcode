@@ -55,3 +55,40 @@ cat test.fna | awk '{ printf("%s",$0); n++; if(n%2==0) { printf("\n");} else { p
 # getline to save next line
 ```
 
+- 20190326 About '\n' '\t' '\' ' '(space) 的操作
+```bash
+# 空行
+grep '^$'
+# \t
+grep -P "\t" # 这里注意，一定是双引号～
+# 替换\n
+sed ':a;N;s/\n/替换内容/g;ta' file.txt
+# \ 匹配
+grep "/\"
+```
+### python
+- 20190329 About pool in Python
+```python
+import multiprocessing
+
+def func(argv):
+    return "somethings"
+    
+pool = multiprocessing.Pool(processes=20) # 并行数
+OUT = pool.map(mapID,(numLst)) # numLst must be iterable
+pool.close()
+pool.join()
+```
+- 20190329 networkx 
+```python
+# make graph
+G = nx.Graph([{from1,to1},{from1,to2} ...])
+# get branch dict (when Graph isTree, setting source = root)
+branch_dict = nx.single_source_shortest_path(G, 1) # root's nodenID = 1 in G
+```
+[Example_20190329](https://github.com/KidultXJT/Leetcode/blob/master/20190329.py) 处理nodes.dmp和names.dmp文件，输出：
+```bash
+# taxonomy_7.txt
+@species\tkingdom__taxid__taxname\tphylum__taxid__taxname\tclass__taxid__taxname\torder__taxid__taxname\tfamily__taxid__taxname\tgenus__taxid__taxname\tspecies__taxid__taxname
+@phylum\tkingdom____taxname\tphylum__taxid__taxname
+```
