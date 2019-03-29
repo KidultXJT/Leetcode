@@ -67,7 +67,7 @@ sed ':a;N;s/\n/替换内容/g;ta' file.txt
 grep "/\"
 ```
 ### python
-- 20190329 About pool in Python
+- 20190329 About [pool](https://docs.python.org/2/library/multiprocessing.html)(multiprocessing) in Python
 ```python
 import multiprocessing
 
@@ -79,7 +79,7 @@ OUT = pool.map(mapID,(numLst)) # numLst must be iterable
 pool.close()
 pool.join()
 ```
-- 20190329 networkx 
+- 20190329 [networkx](https://networkx.github.io/documentation/stable/_downloads/networkx_reference.pdf) 
 ```python
 # make graph
 G = nx.Graph([{from1,to1},{from1,to2} ...])
