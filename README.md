@@ -92,3 +92,80 @@ branch_dict = nx.single_source_shortest_path(G, 1) # root's nodenID = 1 in G
 @species\tkingdom__taxid__taxname\tphylum__taxid__taxname\tclass__taxid__taxname\torder__taxid__taxname\tfamily__taxid__taxname\tgenus__taxid__taxname\tspecies__taxid__taxname
 @phylum\tkingdom____taxname\tphylum__taxid__taxname
 ```
+
+##### Biopython
+> Tools for **computational molecular biology**. Basically, the goal of Biopython is to make it as easy as possible to use Python for **bioinformatics** by creating high-quality, reusable modules and classes. Biopython features include parsers for various Bioinformatics file formats, **access to online services** (NCBI, Expasy,...), interfaces to common and not-so-common programs, a standard sequence class, various clustering modules, a KD tree data structure etc. 
+
+- 20190404 [download_sequence_from_NCBI](biopython.org/DIST/docs/tutorial/Tutorial.html)
+```
+from Bio import Entrez
+# search in ncbi
+search_handle = Entrez.esearch(db="nucleotide",term="search",usehistory="y", idtype="acc")
+search_results = Entrez.read(search_handle)
+search_handle.close()
+# accession ID list
+acc_list = search_results["IdList"]
+count = len(acc_list)
+# webenv session cookies and querykey
+webenv = search_results["WebEnv"]
+query_key = search_results["QueryKey"]
+# Download
+try:
+    from urllib.error import HTTPError  # for Python 3
+except ImportError:
+    from urllib2 import HTTPError  # for Python 2
+batch_size = 3 # download num of sequence each times
+fa_handle = open("out.fasta", "w")
+gb_handle = open("out.gb", "w")
+for start in range(0, count, batch_size):
+    end = min(count, start+batch_size)
+    print("Going to download record %i to %i" % (start+1, end))
+    attempt = 0
+    while attempt < 3:
+        attempt += 1
+        try:
+            # fetch by accession ID
+            fetch_fa_handle = Entrez.efetch(db="nucleotide",rettype="fasta",retmode="text",retstart=start, retmax=batch_size,webenv=webenv,query_key=query_key,idtype="acc")
+            fetch_gb_handle = Entrez.efetch(db="nucleotide",rettype="genbank",retmode="text",retstart=start, retmax=batch_size,webenv=webenv,query_key=query_key,idtype="acc")
+        # if HTTPError just wait ~
+        except HTTPError as err:
+            if 500 <= err.code <= 599:
+                print("Received error from server %s" % err)
+                print("Attempt %i of 3" % attempt)
+                time.sleep(15)
+            else:
+                raise
+    fa = fetch_fa_handle.read()
+    gb = fetch_gb_handle.read()
+    fetch_fa_handle.close()
+    fetch_gb_handle.close()
+    fa_handle.write(fa)
+    gb_handle.write(gb)
+fa_handle.close()
+gb_handle.close()
+```
+- 20190404 [get_accID_by_taxID](biopython.org/DIST/docs/tutorial/Tutorial.html)
+```
+# taxID is a standard ID from NCBI/Taxonomy Database, taxID can convert to a Lineage information
+# Step 1 convert taxID to a orgn information
+handle = Entrez.efetch(db="Taxonomy", id=str(taxID), retmode="xml")
+records = Entrez.read(handle)
+records[0].keys()
+out: ['Lineage', 'Division', 'ParentTaxId', 'PubDate', 'LineageEx', 'CreateDate', 'TaxId', 'Rank', 'GeneticCode', 'ScientificName', 'MitoGeneticCode', 'UpdateDate']
+LineageSTR = records[0]["Lineage"]
+LineageLst = LineageSTR.split("; ")
+OrgnName   = LineageLst[-1] # last name OR
+# species name
+# Step 2 base on orgn information to get the accession ID List
+search_handle = Entrez.esearch(db="nucleotide",term=str(OrgnName),usehistory="y", idtype="acc")
+... # see below examples
+```
+- 20190404 [get_orgn_genomic_by_taxID](biopython.org/DIST/docs/tutorial/Tutorial.html)
+```
+# taxID is a standard ID from NCBI/Taxonomy Database, taxID can convert to a Lineage information
+# Step 1 convert taxID to a orgn information
+... # see below example
+# Step 2 base on orgn information to get the genomic accession ID List
+search_handle = Entrez.esearch(db="genome",term=str(OrgnName),usehistory="y", idtype="acc")
+... # see below example
+```
