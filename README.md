@@ -97,7 +97,7 @@ branch_dict = nx.single_source_shortest_path(G, 1) # root's nodenID = 1 in G
 > Tools for **computational molecular biology**. Basically, the goal of Biopython is to make it as easy as possible to use Python for **bioinformatics** by creating high-quality, reusable modules and classes. Biopython features include parsers for various Bioinformatics file formats, **access to online services** (NCBI, Expasy,...), interfaces to common and not-so-common programs, a standard sequence class, various clustering modules, a KD tree data structure etc. 
 
 - 20190404 [download_sequence_from_NCBI](biopython.org/DIST/docs/tutorial/Tutorial.html)
-```
+```python
 from Bio import Entrez
 # search in ncbi
 search_handle = Entrez.esearch(db="nucleotide",term="search",usehistory="y", idtype="acc")
@@ -145,7 +145,7 @@ fa_handle.close()
 gb_handle.close()
 ```
 - 20190404 [get_accID_by_taxID](biopython.org/DIST/docs/tutorial/Tutorial.html)
-```
+```python
 # taxID is a standard ID from NCBI/Taxonomy Database, taxID can convert to a Lineage information
 # Step 1 convert taxID to a orgn information
 handle = Entrez.efetch(db="Taxonomy", id=str(taxID), retmode="xml")
@@ -164,7 +164,7 @@ search_handle = Entrez.esearch(db="nucleotide",term=searchSTR,usehistory="y", id
 ... # see below
 ```
 - 20190404 [get_orgn_genomic_by_taxID](biopython.org/DIST/docs/tutorial/Tutorial.html)
-```
+```python
 # taxID is a standard ID from NCBI/Taxonomy Database, taxID can convert to a Lineage information
 # Step 1 convert taxID to a orgn information
 ... # see below
@@ -176,7 +176,28 @@ searchSTR = '"{orgn}"[Organism] AND ({division}[filter] AND biomol_genomic[PROP]
     division=str(records[0]["Division"]).lower())
 ... # see below
 ```
-[Example_20190404](https://github.com/KidultXJT/Leetcode/blob/master/20190404.py)
+[Example_20190404](https://github.com/KidultXJT/Leetcode/blob/master/20190404.py) 根据taxid查找物种名称并进行精确匹配下载基因组序列（e.g. "Arcanobacterium haemolyticum"[Organism] AND (bacteria[filter] AND biomol_genomic[PROP])）：
+```bash
+python 20190404.py taxidFile taxidFile_outdir
+## input taxid from NCBI::taxonomy
+46125
+32002
+85698
+187327
+80869
+470
+## output fasta
+## e.g. Division-speciesName-taxid.fasta
+.
+`-- taxidFile_outdir
+|  |-- Bacteria-Abiotrophia_defectiva-46125.fasta
+|  |-- Bacteria-Achromobacter_denitrificans-32002.fasta
+|  |-- Bacteria-Achromobacter_xylosoxidans-85698.fasta
+|  |-- Bacteria-Acidaminococcus_intestini-187327.fasta
+|  |-- Bacteria-Acidovorax_citrulli-80869.fasta
+|  `-- Bacteria-Acinetobacter_baumannii-470.fasta
+`-- taxidFile.completed
+```
 
 - 20190409 [pandas001](http://pandas.pydata.org/)
 pandas: powerful Python data analysis toolkit[(Documents)](http://pandas.pydata.org/pandas-docs/stable/). And Coursera ::[python data analysis](https://www.coursera.org/learn/python-data-analysis)
