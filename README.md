@@ -152,20 +152,31 @@ handle = Entrez.efetch(db="Taxonomy", id=str(taxID), retmode="xml")
 records = Entrez.read(handle)
 records[0].keys()
 out: ['Lineage', 'Division', 'ParentTaxId', 'PubDate', 'LineageEx', 'CreateDate', 'TaxId', 'Rank', 'GeneticCode', 'ScientificName', 'MitoGeneticCode', 'UpdateDate']
-LineageSTR = records[0]["Lineage"]
-LineageLst = LineageSTR.split("; ")
-OrgnName   = LineageLst[-1] # last name OR
+OrgnName = records[0]["ScientificName"]
 # species name
 # Step 2 base on orgn information to get the accession ID List
-search_handle = Entrez.esearch(db="nucleotide",term=str(OrgnName),usehistory="y", idtype="acc")
-... # see below examples
+# set up the search ITEM
+# "Arcanobacterium haemolyticum"[Organism] AND bacteria[filter]
+searchSTR = '"{orgn}"[Organism] AND {division}[filter]'.format(
+    orgn=str(orgn),
+    division=str(records[0]["Division"]).lower())
+search_handle = Entrez.esearch(db="nucleotide",term=searchSTR,usehistory="y", idtype="acc")
+... # see below
 ```
 - 20190404 [get_orgn_genomic_by_taxID](biopython.org/DIST/docs/tutorial/Tutorial.html)
 ```
 # taxID is a standard ID from NCBI/Taxonomy Database, taxID can convert to a Lineage information
 # Step 1 convert taxID to a orgn information
-... # see below example
+... # see below
 # Step 2 base on orgn information to get the genomic accession ID List
-search_handle = Entrez.esearch(db="genome",term=str(OrgnName),usehistory="y", idtype="acc")
-... # see below example
+# set up the search ITEM
+# "Arcanobacterium haemolyticum"[Organism] AND (bacteria[filter] AND biomol_genomic[PROP])
+searchSTR = '"{orgn}"[Organism] AND ({division}[filter] AND biomol_genomic[PROP])'.format(
+    orgn=str(orgn),
+    division=str(records[0]["Division"]).lower())
+... # see below
 ```
+[Example_20190404](https://github.com/KidultXJT/Leetcode/blob/master/20190404.py)
+
+- 20190409 [pandas001](http://pandas.pydata.org/)
+pandas: powerful Python data analysis toolkit[(Documents)](http://pandas.pydata.org/pandas-docs/stable/). And Coursera ::[python data analysis](https://www.coursera.org/learn/python-data-analysis)
