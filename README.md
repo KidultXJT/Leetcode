@@ -66,6 +66,15 @@ sed ':a;N;s/\n/替换内容/g;ta' file.txt
 # \ 匹配
 grep "/\"
 ```
+
+- 20190513 About "ls Argument list too long"
+```bash
+# ls *gff* | wc -l 
+# ls Argument list too long
+# find
+find . -name '*gff*' | wc -l
+```
+
 ### python
 - 20190329 About [pool](https://docs.python.org/2/library/multiprocessing.html)(multiprocessing) in Python
 ```python
