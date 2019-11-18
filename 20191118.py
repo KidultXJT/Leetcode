@@ -32,7 +32,7 @@ import markdown
 from Bio import Entrez
 
 
-keyword = sys.argv[1] # 1 ID each line
+keyword = sys.argv[1] # STR
 prefix  = sys.argv[2] # outNAME
 Top     = sys.argv[3] #
 
