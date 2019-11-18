@@ -232,5 +232,51 @@ python 20181118.py Cryptococcus_neoformans_AND_Meningitis Cryptococcus_neoforman
 注意一个问题：
 本次代码用到了 Bio.Entrez 模块，这个模块可以保证用来查询的URL的正确性，<u>并且向NCBI要求的一样，``每三秒钟查询的次数不超过一``。</u>
 
+- 20191119 SummaryAbstract From [Example_20191118](https://github.com/KidultXJT/Leetcode/blob/master/20191118.py)
+注意一个问题：
+Example_20191118 代码在Abstract文本之间插入了 "\n\nNextItem"
+```python 
+#...
+def GetAbstract(PMIDs=['31703006']):
+    ## PMIDs from GetPMID(keyword)
+    Lst = []
+    for i in PMIDs:
+        i = int(i)
+        handle=Entrez.efetch(db='pubmed', rettype='abstract', id=i, retmode='text')
+        handle_text=handle.read()
+        Lst.append(handle_text)
+    Abstracts="\n\nNextItem".join(Lst) ## <--------- Here !!!!
+    return Abstracts
+#...
+```
+所以对应的 Example 20191119 中对应的代码需要留意：
+```python
+# ...
+abstract_format=open(abstract.split(".")[0]+".ab","w")
+Abstract=Abstract.read().replace("\n"," ").replace("  "," ")
+PMID=[" ".join(str(i.split("PMID")[-1].strip().replace(":","PMID:")).split(" ")[:2]) for i in Abstract.split("NextItem")]
+Abstract=[i.strip() for i in Abstract.split("NextItem")]
+# ...
+```
+输出结果包含两部分：
+1. 整理后的Abstract表格(column1为PMID；column2为其他文本，后缀为.ab)
+2. 信息提取(column1为PMID；column2-9为bacteria/fungi/viruses/parasite NUM和genus信息；column10-11为Keyword NUM及包含keyword句子，后缀为.keyword)
+3. log文件
+```bash
+for i in `ls *.txt`; do echo ${i%%_200_Abstract.txt} ; cat Summary/${i%%_Abstract.txt}*.log | sort -u ;done
+# Keyword Match: x
+# Keyword maybe Match: y
+# There are n/m genus in PARASITE
+# There are n/m genus in BACTERIA
+# There are n/m genus in FUNGI
+# There are n/m genus in VIRUSES
+# Match 代表全匹配
+# maybe Match 代表部分匹配
+# There are n/m genus in *
+# n 为 Abstract 文本中出现匹配的单词次数
+# m 为 db/*.genus 数据库列表中genus的数量，其中，db的字符串可能是重复（例如simplex和hsv，同时存在）
+```
+代码见 [Example_20191118](https://github.com/KidultXJT/Leetcode/blob/master/20191119.py)
+
 - 20190409 [pandas001](http://pandas.pydata.org/)
 pandas: powerful Python data analysis toolkit[(Documents)](http://pandas.pydata.org/pandas-docs/stable/). And Coursera ::[python data analysis](https://www.coursera.org/learn/python-data-analysis)
