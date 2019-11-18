@@ -208,5 +208,29 @@ python 20190404.py taxidFile taxidFile_outdir
 `-- taxidFile.completed
 ```
 
+- 20191118 [DownLoadAbstractbyKeyword](https://biopython-cn.readthedocs.io/zh_CN/latest/cn/chr09.html)
+Entrez (http://www.ncbi.nlm.nih.gov/Entrez) 是一个给客户提供NCBI各个数据库（如PubMed, GeneBank, GEO等等）访问的检索系统。 用户可以通过浏览器手动输入查询条目访问Entrez，也可以使用Biopython的 Bio.Entrez 模块以编程方式访问来访问Entrez。 如果使用第二种方法，用户用一个Python脚本就可以实现在PubMed里面搜索或者从GenBank下载数据。
+```python
+# Keywords that search in the NCBI brower, like AAAA AND BBB 
+# " " instead of "_"
+# Step 1 dealing the keyword
+# Step 2 use Bio.Entrez get PMID
+# ... Entrez.esearch(db="pubmed",term=keyword,retmax=int(Top)) ...
+# Step 3 get Abstract Text
+# ... Entrez.efetch(db='pubmed',rettype='abstract',id=pmid,retmode='text') ...
+```
+[Example_20191118](https://github.com/KidultXJT/Leetcode/blob/master/20191118.py) 根据关键词查找PMID并下载对应的Abstract：
+```bash
+# keyword  Cryptococcus_neoformans_AND_Meningitis
+# prefix Cryptococcus_neoformans_AND_Meningitis_200
+# Top 200 (Try 200)
+python 20181118.py Cryptococcus_neoformans_AND_Meningitis Cryptococcus_neoformans_AND_Meningitis_200 200
+# output:
+# with PMID: 
+# with Abstract All Text
+```
+注意一个问题：
+本次代码用到了 Bio.Entrez 模块，这个模块可以保证用来查询的URL的正确性，<u>并且向NCBI要求的一样，``每三秒钟查询的次数不超过一``。</u>
+
 - 20190409 [pandas001](http://pandas.pydata.org/)
 pandas: powerful Python data analysis toolkit[(Documents)](http://pandas.pydata.org/pandas-docs/stable/). And Coursera ::[python data analysis](https://www.coursera.org/learn/python-data-analysis)
