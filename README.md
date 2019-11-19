@@ -280,3 +280,7 @@ for i in `ls *.txt`; do echo ${i%%_200_Abstract.txt} ; cat Summary/${i%%_Abstrac
 
 - 20190409 [pandas001](http://pandas.pydata.org/)
 pandas: powerful Python data analysis toolkit[(Documents)](http://pandas.pydata.org/pandas-docs/stable/). And Coursera ::[python data analysis](https://www.coursera.org/learn/python-data-analysis)
+
+- 20191119 [Graphene](https://docs.graphene-python.org/en/latest/quickstart/) 
+Graphene is a library that provides tools to implement a GraphQL API in Python using a code-first approach. Compare Graphene’s code-first approach to building a GraphQL ``API`` with schema-first approaches like Apollo Server (JavaScript) or Ariadne (``Python``). Instead of writing GraphQL Schema Definition Language (SDL), <u>we write Python code to describe the data provided by your server.</u> **Graphene** is fully featured with integrations for the most popular ``web frameworks`` and ``ORMs``. Graphene produces schemas tha are fully compliant with the [GraphQL](https://graphql.org/code/?source=post_page---------------------------#python) spec and provides tools and patterns for building a Relay-Compliant API as well. 
+[GraphQL to Json by Graphene](https://docs.graphene-python.org/en/latest/_modules/graphene/types/json/#JSONString)
