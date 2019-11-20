@@ -278,6 +278,44 @@ for i in `ls *.txt`; do echo ${i%%_200_Abstract.txt} ; cat Summary/${i%%_Abstrac
 ```
 代码见 [Example_20191118](https://github.com/KidultXJT/Leetcode/blob/master/20191119.py)
 
+- 20191120 Popset Database [Example_20191120](https://github.com/KidultXJT/Leetcode/blob/master/20191120.py)
+PopSet 来自比较研究的相关DNA序列的数据库，关于<u>系统发育、种群、环境以及在较小程度上的突变</u>。数据库中的每个记录都是``一组``DNA序列(UID)。例如、群体集提供有关生物体内遗传变异的信息，而系统发育集可以包含从几个相关生物获得的单个基因的序列及其比对。
+e.g [NCBI_Web_Popset_UID:1761114227](https://www.ncbi.nlm.nih.gov/popset/?term=1761114227)
+
+根据物种信息获取UID（PopsetID）:
+```python 
+#...
+    handle = Entrez.esearch(db="popset",
+                            term=keyword,
+                            retmax=int(Top))
+                            #mindate= "2015/01",
+                            #maxdate= "2019/11")
+    record = Entrez.read(handle) # list
+    UID = record["IdList"]
+#...
+```
+根据UID（PopsetID）获取XML文件:
+```python 
+#...
+    outxml = Entrez.efetch(db="popset",id=str(ID),retmode="xml").read()
+    open("x.xml","w").write(outxml)
+#...
+```
+解释UID-XML文件:
+```python 
+#...
+    handle = Entrez.parse(open("x.xml","r"))
+    for record in Entrez.parse(handle): # Entrez.parse(handle) 是迭代器
+        tmpLst = [ID, # UID
+                  record['GBSeq_accession-version'],
+                  record['GBSeq_definition'],
+                  record['GBSeq_moltype'],
+                  record["GBSeq_source"],
+                  record['GBSeq_taxonomy'],
+                  record['GBSeq_sequence']]            
+#...
+```
+
 - 20190409 [pandas001](http://pandas.pydata.org/)
 pandas: powerful Python data analysis toolkit[(Documents)](http://pandas.pydata.org/pandas-docs/stable/). And Coursera ::[python data analysis](https://www.coursera.org/learn/python-data-analysis)
 
